@@ -44,14 +44,8 @@ flutter:
  
   uses-material-design: true
 
-  assets:
-    - assets/images/avatar_logo.png
-    - assets/images/indicator_image.png
-    - assets/images/bit_coin.png
-    - assets/images/toggle_view_graph.png
-    - assets/images/sectors_logo.png
-    - assets/images/404.png
-    - assets/images/header.jpg
+  # assets:
+  
 
   # fonts:
   #   - family: Poppins
