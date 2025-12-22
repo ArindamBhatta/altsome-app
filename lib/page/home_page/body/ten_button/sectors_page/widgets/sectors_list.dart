@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../../../model/model_three.dart';
-import '../../../../../../repo/repo.dart';
 import 'sector_card.dart';
 
 class SectorsList extends StatefulWidget {
@@ -20,7 +19,6 @@ class _SectorsListState extends State<SectorsList> {
 
   @override
   void initState() {
-    _dataFuture = Repo.accessSectorsApi();
     super.initState();
   }
 

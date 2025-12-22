@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:altsome_app/page/home_page/body/fear_and_green_indicator/heading_and_download_button.dart';
 import 'package:altsome_app/page/home_page/body/fear_and_green_indicator/static_image_indicator.dart';
 import 'data_percentage.dart';
-import 'package:altsome_app/repo/repo.dart';
+
 import '../../../../model/model_one.dart';
 
 class FearAndGreedIndex extends StatefulWidget {
@@ -32,24 +32,6 @@ class _FearAndGreedIndexState extends State<FearAndGreedIndex> {
       default:
         return Colors.black;
     }
-  }
-
-  void _startFakeLoadingAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      setState(() {
-        _progressValue += 0.1;
-        if (_progressValue >= 1.0) {
-          _progressValue = 0.0; // Reset progress for continuous animation
-        }
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _dataFuture = Repo.accessFirstApi();
-    _startFakeLoadingAnimation();
   }
 
   @override

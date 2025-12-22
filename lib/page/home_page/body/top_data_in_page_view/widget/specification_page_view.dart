@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'dart:async';
 import '../../../../../model/model_two.dart';
-import '../../../../../repo/repo.dart';
+
 import '../utils/navigation_button.dart';
 import 'static_heading.dart';
 import 'specification_list.dart';
@@ -24,8 +24,7 @@ class _SpecificationPageViewState extends State<SpecificationPageView> {
 
   Future<ModelTwo?> accessSecondApi() async {
     try {
-      ModelTwo? resolvedData = await Repo.accessSecondApi();
-      return resolvedData;
+      return null;
     } catch (error) {
       print("Error occurred: $error");
       return null;
@@ -166,10 +165,3 @@ class _SpecificationPageViewState extends State<SpecificationPageView> {
     );
   }
 }
-
-
-/* 
-context.read<ProviderClass>().method(argument);
-context.watch<ProviderClass>().method(argument);
-assign = context.select((Class   instance) => instance.property);
-*/

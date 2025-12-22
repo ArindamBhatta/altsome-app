@@ -1,7 +1,4 @@
-import 'package:altsome_app/page/Authentication/sign_in_form.dart';
 import 'package:flutter/material.dart';
-
-import '../../crud_operation/expense_tracker_main_page.dart';
 
 class ParentNavigation extends StatelessWidget {
   ParentNavigation({super.key});
@@ -45,14 +42,7 @@ class ParentNavigation extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ExpenseTrackerMainPage(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
                     icon: const Icon(
                       Icons.donut_small_rounded,
                     ),
@@ -87,7 +77,7 @@ class ParentNavigation extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (context) => SignInForm(),
+                                      builder: (context) => const Placeholder(),
                                     ),
                                   );
                                 },

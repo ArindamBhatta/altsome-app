@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'card_structure.dart';
 import '../../../../../model/model_one.dart';
-import '../../../../repo/repo.dart';
 
 class MCapCard extends StatefulWidget {
   const MCapCard({super.key});
@@ -18,7 +17,6 @@ class _MCapCardState extends State<MCapCard> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = Repo.accessFirstApi();
   }
 
   @override

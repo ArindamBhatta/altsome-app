@@ -1,8 +1,5 @@
-import 'package:altsome_app/page/sliver_list_and_greed/food_order.dart';
 import 'package:flutter/material.dart';
 import 'package:altsome_app/page/home_page/home_page.dart';
-import 'package:altsome_app/page/crud_operation/expense_tracker_main_page.dart';
-import '../upload_picture/picture_page.dart';
 
 class NavigationFooter extends StatefulWidget {
   const NavigationFooter({super.key});
@@ -68,9 +65,9 @@ class _NavigationFooterState extends State<NavigationFooter> {
           ]),
       body: <Widget>[
         HomePage(),
-        ExpenseTrackerMainPage(),
-        PicturePage(),
-        FoodOrder(),
+        Placeholder(),
+        Placeholder(),
+        Placeholder()
       ][currentPageIndex],
     );
   }
