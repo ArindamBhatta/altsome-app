@@ -1,6 +1,8 @@
 import 'package:altsome_app/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +21,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     super.initState();
     _mainImage = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 4000),
+      duration: const Duration(milliseconds: 2000),
     );
     _subImage = AnimationController(
       vsync: this,
@@ -30,19 +32,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       duration: const Duration(milliseconds: 1000),
     );
 
-    _mainImage.forward();
+    // 1. Start background animation first
+    _backgroundImage.forward();
 
-    _mainImage.addStatusListener((status) {
+    _backgroundImage.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _subImage.forward();
-      }
-    });
-
-    _subImage.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(seconds: 1), () {
-          if (mounted) _backgroundImage.forward();
-        });
+        // 2. Then showing logo and text
+        if (mounted) {
+          _mainImage.forward();
+          _subImage.forward();
+        }
       }
     });
   }
@@ -73,42 +72,44 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           return Stack(
             children: [
               // Background image that fades in last
-              // FadeTransition(
-              //   opacity: _backgroundImage,
-              //   child: Container(
-              //     width: double.infinity,
-              //     height: double.infinity,
-              //     decoration: const BoxDecoration(
-              //       image: DecorationImage(
-              //         image: AssetImage(
-              //           'assets/images/splash_background.png',
-              //         ),
-              //         fit: BoxFit.cover,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Centered logo and text (foreground)
+              FadeTransition(
+                opacity: _backgroundImage,
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/splash_background.png',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
 
-              // Centered logo and text
               Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FadeTransition(
-                      opacity: _mainImage,
-                      child: Image.asset(
-                        'assets/images/restomag_logo.png',
-                        width: actualLogoSize,
-                        fit: BoxFit.contain,
+                      opacity: _subImage,
+                      child: Text(
+                        'Altsome',
+                        style: GoogleFonts.outfit(
+                          textStyle: theme.textTheme.displayMedium,
+                          color: theme.colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
                     const SizedBox(height: AppTheme.spacingM),
                     FadeTransition(
-                      opacity: _subImage,
+                      opacity: _mainImage,
                       child: Image.asset(
-                        'assets/images/splash_text_img.png',
-                        width: actualLogoSize,
+                        'assets/images/fox_mask_logo.png',
+                        width: maxLogoSize,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -130,10 +131,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Welcome to RestoMag",
+                          "Welcome to Altsome",
                           textAlign: TextAlign.center,
                           style: theme.textTheme.headlineSmall?.copyWith(
-                            color: theme.colorScheme.onSurface,
+                            color: theme.colorScheme.primary,
                             fontWeight: FontWeight.w600,
                             fontSize: size.width * 0.05, // responsive font
                           ),
@@ -142,7 +143,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () async {},
+                            onPressed: () {
+                              context.go('/login');
+                            },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                 vertical: size.height * 0.02,
@@ -153,7 +156,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                             ),
                             child: Text(
                               'Get Started',
-                              style: TextStyle(
+                              style: GoogleFonts.outfit(
                                 fontSize: size.width * 0.045,
                                 fontWeight: FontWeight.bold,
                               ),

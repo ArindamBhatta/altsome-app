@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:altsome_app/core/utils/app_logger.dart';
 import 'package:altsome_app/core/widgets/error.dart';
 import 'package:altsome_app/page/login/provider/auth_provider.dart';
+import 'package:altsome_app/page/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,7 +25,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoute.splash,
         name: AppRoute.splash,
-        builder: (context, state) => const Placeholder(),
+        builder: (context, state) => const SplashScreen(),
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
@@ -72,7 +73,7 @@ void main() async {
     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
     AppLogger.logger.i('Supabase initialized successfully.');
 
-    runApp(const ProviderScope(child: GearApp()));
+    runApp(const ProviderScope(child: AltsomeApp()));
   } catch (e, stackTrace) {
     AppLogger.logger.e(
       'Error initializing app',
@@ -84,15 +85,15 @@ void main() async {
   }
 }
 
-class GearApp extends HookConsumerWidget {
-  const GearApp({super.key});
+class AltsomeApp extends HookConsumerWidget {
+  const AltsomeApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider); // Watch the router provider
 
     return MaterialApp.router(
-      title: 'Restomag Garage',
+      title: 'Altsome',
       themeMode: ThemeMode.system,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
