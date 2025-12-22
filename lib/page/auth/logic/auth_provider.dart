@@ -1,4 +1,4 @@
-import 'package:altsome_app/page/login/service/auth_service.dart';
+import 'package:altsome_app/page/auth/data/service/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';

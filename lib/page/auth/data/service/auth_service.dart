@@ -1,7 +1,17 @@
+import 'dart:async';
+
 import 'package:altsome_app/core/utils/app_logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
+  //private stream controller
+  static final StreamController<Map<String, dynamic>> _streamController =
+      StreamController();
+
+  //public getter for stream
+  static Stream<Map<String, dynamic>> get stream =>
+      _streamController.stream.asBroadcastStream();
+
   final SupabaseClient _client;
 
   AuthService(this._client);

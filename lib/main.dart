@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:altsome_app/core/utils/app_logger.dart';
 import 'package:altsome_app/core/widgets/error.dart';
-import 'package:altsome_app/page/login/provider/auth_provider.dart';
+import 'package:altsome_app/page/auth/presentation/view.dart';
+import 'package:altsome_app/page/auth/logic/auth_provider.dart';
 import 'package:altsome_app/page/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,6 +27,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoute.splash,
         name: AppRoute.splash,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.login,
+        name: AppRoute.login,
+        builder: (context, state) => const LoginScreen(),
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
