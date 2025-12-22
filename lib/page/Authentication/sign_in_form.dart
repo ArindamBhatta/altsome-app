@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -52,91 +50,46 @@ class _SignInFormState extends State<SignInForm> {
   }
 
 // * Method to handle form submission
+  // * Method to handle form submission
   void submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       _showLoadingDialog(); //* Show the loading dialog
-    }
 
-    //* Check if email and password is store in Firebase
-    try {
-      final UserCredential user =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _email!,
-        password: _password!,
-      );
-      //* get user id from firebase
-      final accessToken = user.user!.uid;
-      print("firebase user id: $accessToken");
-      //* set in provider
-      context.read<LoginAuthProvider>().setUserAccessToken(accessToken);
-      //* Close the loading dialog
-      Navigator.pop(context);
+      // Simulate network delay
+      print(
+          "Attempting login for $_email with password length ${_password?.length}");
+      await Future.delayed(Duration(seconds: 1));
 
-//*  if email and password is not store in Firebase
-    } catch (error) {
-      Navigator.pop(context); //* Close the loading dialog in case of error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Login failed',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          duration: Duration(seconds: 5),
-        ),
-      );
-    }
-  }
+      // Dummy login
+      context.read<LoginAuthProvider>().setUserAccessToken("dummy_token");
 
-//* 2nd Alternative Method: -  Google Sign In
-  Future<void> signInWithGoogle() async {
-    _showLoadingDialog(); //* show a loading dialog because fetch all email from device
-
-//* package google_sign_in check email in device and store in a googleUser
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser == null) {
-        Navigator.pop(context); //* Close the dialog no email found
-        return;
-      }
-
-//* if email is found then store in a googleUser
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-      Navigator.pop(context); //* Close the loading dialog
-
+      Navigator.pop(context); // Close loading dialog
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => AltsomeApp(),
         ),
       );
-    } catch (error) {
-      Navigator.pop(context); //* Close the loading dialog in case of error
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Google sign-in failed',
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          duration: Duration(seconds: 5),
-        ),
-      );
     }
+  }
+
+//* 2nd Alternative Method: -  Google Sign In
+  //* 2nd Alternative Method: -  Google Sign In
+  Future<void> signInWithGoogle() async {
+    // Dummy Google login
+    _showLoadingDialog();
+    await Future.delayed(Duration(seconds: 1));
+
+    context.read<LoginAuthProvider>().setUserAccessToken("dummy_google_token");
+
+    Navigator.pop(context); // Close loading dialog
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AltsomeApp(),
+      ),
+    );
   }
 
   @override
@@ -287,7 +240,3 @@ class _SignInFormState extends State<SignInForm> {
     );
   }
 }
-// Notifying id token listeners about user ( ggfUxSEsr7Q44wVmVTJha9UkpdG2 ).
-//*1.taken is store in a variable.
-//*2. store in local storage.
-//3. check every time before user login

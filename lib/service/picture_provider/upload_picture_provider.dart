@@ -1,12 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class UploadPictureProvider extends ChangeNotifier {
-  //* initialize firebase storage
-  final firebaseStorage = FirebaseStorage.instance;
-
   List<String> imageUrls = [];
   bool isLoading = false;
   bool isUploading = false;
@@ -26,16 +23,15 @@ class UploadPictureProvider extends ChangeNotifier {
   //! read images
   Future<void> fetchImages() async {
     isLoading = true;
-    final ListResult result =
-        await firebaseStorage.ref('upload_images/').list();
+    notifyListeners();
 
-    final urls = await Future.wait(
-      result.items.map(
-        (ref) => ref.getDownloadURL(),
-      ),
-    );
+    // Mock images
+    await Future.delayed(Duration(seconds: 1));
+    imageUrls = [
+      'https://via.placeholder.com/150',
+      'https://via.placeholder.com/150',
+    ];
 
-    imageUrls = urls; //*show this list in UI
     isLoading = false;
     notifyListeners();
   }
@@ -50,16 +46,18 @@ class UploadPictureProvider extends ChangeNotifier {
     if (image != null) {
       File file = File(image.path);
       try {
-        String filePath = 'upload_images/${image.name}';
-        //* putFile upload the image
-        UploadTask uploadTask = firebaseStorage.ref(filePath).putFile(file);
-        String downloadUrl = await (await uploadTask).ref.getDownloadURL();
+        print("Uploading file from: ${file.path}");
+        // Simulate upload
+        await Future.delayed(Duration(seconds: 1));
+
+        // Mock new image URL (just use locals or random placeholder)
+        String downloadUrl = 'https://via.placeholder.com/150?text=New+Image';
         //* update the image url list and UI
         imageUrls.add(downloadUrl);
         isUploading = false;
         notifyListeners();
       } catch (error) {
-        print("Error uploading image in firebase: $error");
+        print("Error uploading image: $error");
       } finally {
         isUploading = false;
         notifyListeners();

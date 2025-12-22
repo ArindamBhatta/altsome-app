@@ -1,7 +1,6 @@
 import 'package:altsome_app/page/Authentication/sign_in_form.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:email_validator/email_validator.dart';
 
 import '../../altsome_app.dart';
@@ -18,8 +17,6 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _email;
   String? _password;
   String? _confirmPassword;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> submitForm() async {
     if (_password != _confirmPassword) {
@@ -35,33 +32,18 @@ class _SignUpFormState extends State<SignUpForm> {
       print(
         'Form submitted! Email: $_email, Password: $_password confirm: $_confirmPassword',
       );
-      try {
-        UserCredential userCredential =
-            await _auth.createUserWithEmailAndPassword(
-          email: _email!,
-          password: _password!,
-        );
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'email': _email,
-          'createdAt': Timestamp.now(),
-        });
-        print('User registered and data saved in Firestore!');
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AltsomeApp(),
-          ),
-        );
-      } catch (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                '${error.toString().replaceAll("[firebase_auth/email-already-in-use]", "").trim()}'),
-            duration: Duration(seconds: 5),
-          ),
-        );
-      }
+      // Simulate network
+      await Future.delayed(Duration(seconds: 1));
+
+      print('User registered (simulated)!');
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AltsomeApp(),
+        ),
+      );
     }
   }
 
