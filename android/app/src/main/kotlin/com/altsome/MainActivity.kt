@@ -1,4 +1,4 @@
-package com.example.second_try_application
+package com.altsome
 
 import io.flutter.embedding.android.FlutterActivity
 
