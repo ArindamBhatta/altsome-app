@@ -3,6 +3,7 @@ import 'package:altsome_app/core/utils/app_logger.dart';
 import 'package:altsome_app/core/widgets/error.dart';
 import 'package:altsome_app/page/auth/presentation/view.dart';
 import 'package:altsome_app/page/auth/logic/auth_provider.dart';
+import 'package:altsome_app/page/home/interface/view.dart';
 import 'package:altsome_app/page/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +15,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AppRoute {
   static const splash = '/splash';
   static const login = '/login';
+  static const home = '/home';
 }
 
 // Provider for the GoRouter instance
@@ -32,6 +34,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoute.login,
         name: AppRoute.login,
         builder: (context, state) => const LoginScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoute.home,
+        name: AppRoute.home,
+        builder: (context, state) => const HomeScreen(),
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {

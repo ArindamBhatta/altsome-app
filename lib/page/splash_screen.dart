@@ -67,7 +67,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           final logoSize = size.width * 0.3;
           const maxLogoSize = 180.0;
           const minLogoSize = 90.0;
-          final actualLogoSize = logoSize.clamp(minLogoSize, maxLogoSize);
+          logoSize.clamp(minLogoSize, maxLogoSize);
 
           return Stack(
             children: [
