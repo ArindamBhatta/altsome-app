@@ -4,8 +4,6 @@ abstract class AuthEvent {}
 
 class AuthGoogleSignIn extends AuthEvent {}
 
-class AuthTwitterSignIn extends AuthEvent {}
-
 class AuthSignOut extends AuthEvent {}
 
 class InputFocus extends AuthEvent {

@@ -13,7 +13,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthState()) {
     on<InputFocus>(_onInputFocus);
     on<AuthGoogleSignIn>(_onAuthGoogleSignIn);
-    on<AuthTwitterSignIn>(_onAuthTwitterSignIn);
     on<AuthSignOut>(_onAuthSignOut);
     on<AuthResetPassword>(_onAuthResetPassword);
   }
@@ -26,19 +25,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(
         intent: AuthIntent.socialSignIn, outcome: AuthOutcome.inProcess));
     final result = await AuthService.signInWithGoogle();
-    if (result['status'] == true) {
-      emit(state.copyWith(
-          status: AuthStatus.authenticated, outcome: AuthOutcome.success));
-    } else {
-      emit(state.copyWith(
-          outcome: AuthOutcome.failure, message: result['message']));
-    }
-  }
-
-  Future<void> _onAuthTwitterSignIn(AuthTwitterSignIn event, emit) async {
-    emit(state.copyWith(
-        intent: AuthIntent.socialSignIn, outcome: AuthOutcome.inProcess));
-    final result = await AuthService.signInWithTwitter();
     if (result['status'] == true) {
       emit(state.copyWith(
           status: AuthStatus.authenticated, outcome: AuthOutcome.success));

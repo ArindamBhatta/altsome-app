@@ -9,8 +9,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter_login/entity/auth_result.dart';
-import 'package:twitter_login/twitter_login.dart';
 
 import '../model/user_model.dart';
 
@@ -288,78 +286,9 @@ class AuthService {
         return {'status': true, 'message': 'Authentication started.'};
       } else {
         // Fallback or direct signIn()
-        // await _googleSignIn.signIn();
+        //await _googleSignIn.signIn();
         return {'status': true, 'message': 'Sign-in started.'};
       }
-    } catch (e) {
-      return {'status': false, 'message': e.toString()};
-    }
-  }
-
-  static Future<Map<String, dynamic>> signInWithTwitter() async {
-    try {
-      final TwitterLogin twitterLogin = TwitterLogin(
-        apiKey: 'AF13WYiwBwziRBDhH6WyphGIC',
-        apiSecretKey: '1Sb9YJitvUzWct4Pv8Jl2zEyVUDpMqX5np7b1tNDxzA2jQBWE3',
-        redirectURI: 'altsome://',
-      );
-
-      AuthResult authResult = await twitterLogin.login();
-
-      if (authResult.status == TwitterLoginStatus.loggedIn) {
-        final twitterAuthCredential = TwitterAuthProvider.credential(
-          accessToken: authResult.authToken!,
-          secret: authResult.authTokenSecret!,
-        );
-
-        UserCredential firebaseUserData = await FirebaseAuth.instance
-            .signInWithCredential(twitterAuthCredential);
-
-        String? uid = firebaseUserData.user?.uid;
-
-        if (uid == null) {
-          throw 'SignIn With Credential failed. No user.uid is available.';
-        }
-
-        DocumentSnapshot<Map<String, dynamic>> existingUserData =
-            await FirebaseFirestore.instance.collection('Users').doc(uid).get();
-
-        if (!existingUserData.exists) {
-          Map<String, dynamic> configData = await AuthService.getPointsConfig();
-
-          await FirebaseFirestore.instance.collection('Users').doc(uid).set(
-            {
-              'userId': uid,
-              'name': authResult.user?.name,
-              'userName':
-                  authResult.user?.screenName.replaceAll(' ', '').toCamelCase(),
-              'email': firebaseUserData.user?.email ?? '-',
-              'avatarImage': authResult.user?.thumbnailImage,
-              'cryptoWalletCoins': 0,
-              'totalPoints':
-                  configData['status'] == true ? configData['signupBonus'] : 0,
-              'dailyClaimedPoints': [],
-              'lastClaimedData': {},
-              'emailVerified': true,
-            },
-          );
-        }
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('userId', uid);
-        Globals.userId = uid;
-        prefs.setString('emailVerified', 'true');
-        Globals.isEmailVerified = true;
-
-        return {
-          'status': true,
-          'data': uid,
-        };
-      } else {
-        return {'status': false, 'message': 'Failed to Signin with Twitter.'};
-      }
-    } on FirebaseAuthException catch (e) {
-      return {'status': false, 'message': e.message};
     } catch (e) {
       return {'status': false, 'message': e.toString()};
     }

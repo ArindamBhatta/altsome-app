@@ -42,7 +42,7 @@ dependencies:
   email_validator: ^2.1.17
   cached_network_image: ^3.3.1
   dots_indicator: ^3.0.0
-  twitter_login: ^4.4.2
+  # twitter_login: ^4.4.2
   change_case: ^2.2.0
 
 dev_dependencies:

@@ -30,10 +30,6 @@ class AuthRepo {
     return await AuthService.signInWithGoogle();
   }
 
-  Future<Map<String, dynamic>> signInWithTwitter() async {
-    return await AuthService.signInWithTwitter();
-  }
-
   Future<void> signOut() async {
     await AuthService.signOut();
   }
