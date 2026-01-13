@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 
 import '../../firebase_options.dart';
 
+import '../../features/auth/data/service/auth_service.dart';
+
 class FirebaseService {
   static Future<void> init() async {
     try {
@@ -15,6 +17,9 @@ class FirebaseService {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+
+      // Initialize Auth Service
+      AuthService.init();
 
       // Emulator setup
       if (kDebugMode) {

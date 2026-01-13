@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:altsome_app/features/auth/bloc/auth_bloc.dart';
-import 'package:altsome_app/features/auth/bloc/auth_state.dart';
-import 'package:altsome_app/features/auth/presentation/login_screen.dart';
+import 'package:altsome_app/features/auth/interface/bloc/auth_bloc.dart';
+import 'package:altsome_app/features/auth/interface/presentation/view.dart';
 import 'package:altsome_app/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoutes {
-  static const String splash = '/'; // Using / as splash/loading if needed
+  static const String splash = '/';
   static const String login = '/login';
   static const String home = '/home';
 }
