@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "501963981540",
-    "project_id": "check-db-a09a7",
-    "storage_bucket": "check-db-a09a7.appspot.com"
+    "project_number": "492112843733",
+    "project_id": "altsome-b2c3f",
+    "storage_bucket": "altsome-b2c3f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:501963981540:android:9b6ad714181f1eb359e2f1",
+        "mobilesdk_app_id": "1:492112843733:android:6d20f78e7bdb63c9d3635c",
         "android_client_info": {
-          "package_name": "com.example.check_database"
+          "package_name": "com.altsome"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB6NdGN7YmMuiNsq3E6DySjlAxf4IhLfnw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:501963981540:android:1f64776136e0f5fd59e2f1",
-        "android_client_info": {
-          "package_name": "com.example.second_try_application"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB6NdGN7YmMuiNsq3E6DySjlAxf4IhLfnw"
+          "current_key": "AIzaSyBDBZKUE87tVGmrno-4cPl2jaJDfZeMeJc"
         }
       ],
       "services": {

@@ -1,115 +1,71 @@
-import 'dart:async';
-import 'package:altsome_app/core/utils/app_logger.dart';
-import 'package:altsome_app/core/widgets/error.dart';
-import 'package:altsome_app/page/auth/presentation/view.dart';
-import 'package:altsome_app/page/auth/logic/auth_provider.dart';
-import 'package:altsome_app/page/home/interface/view.dart';
-import 'package:altsome_app/page/splash_screen.dart';
+import 'package:altsome_app/config/routes.dart';
+import 'package:altsome_app/config/theme.dart';
+import 'package:altsome_app/core/services/firebase_service.dart';
+import 'package:altsome_app/features/auth/bloc/auth_bloc.dart';
+import 'package:altsome_app/features/auth/data/auth_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-class AppRoute {
-  static const splash = '/splash';
-  static const login = '/login';
-  static const home = '/home';
-}
-
-// Provider for the GoRouter instance
-final routerProvider = Provider<GoRouter>((ref) {
-  return GoRouter(
-    initialLocation: AppRoute.splash,
-    debugLogDiagnostics: true,
-    routes: [
-      // Define routes using AppRoute constants
-      GoRoute(
-        path: AppRoute.splash,
-        name: AppRoute.splash,
-        builder: (context, state) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.login,
-        name: AppRoute.login,
-        builder: (context, state) => const LoginScreen(),
-      ),
-
-      GoRoute(
-        path: AppRoute.home,
-        name: AppRoute.home,
-        builder: (context, state) => const HomeScreen(),
-      ),
-    ],
-    redirect: (BuildContext context, GoRouterState state) {
-      final String currentPath = state.matchedLocation;
-      AppLogger.logger.d("Redirect check: Current location = $currentPath");
-      return null;
-    },
-    refreshListenable: GoRouterRefreshStream(
-      ref.watch(authStateChangesProvider.stream),
-    ),
-  );
-});
-
-class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    _subscription = stream.asBroadcastStream().listen(
-          (dynamic _) => notifyListeners(),
-        );
-  }
-
-  late final StreamSubscription<dynamic> _subscription;
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await dotenv.load(fileName: ".env.dev");
-    final supabaseUrl = dotenv.env['SUPABASE_URL'];
-    final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+  // Initialize Firebase (and Emulators if debug)
+  await ServiceInit.init();
 
-    if (supabaseUrl == null || supabaseAnonKey == null) {
-      throw Exception(
-        '.env file not found or SUPABASE_URL/SUPABASE_ANON_KEY missing.',
-      );
-    }
+  final authRepository = AuthRepository();
 
-    AppLogger.logger.i('Initializing Supabase...');
-    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-    AppLogger.logger.i('Supabase initialized successfully.');
+  runApp(App(authRepository: authRepository));
+}
 
-    runApp(const ProviderScope(child: AltsomeApp()));
-  } catch (e, stackTrace) {
-    AppLogger.logger.e(
-      'Error initializing app',
-      error: e,
-      stackTrace: stackTrace,
+class App extends StatelessWidget {
+  final AuthRepository authRepository;
+
+  const App({super.key, required this.authRepository});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: authRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthBloc(authRepository: authRepository),
+          ),
+        ],
+        child: const AppView(),
+      ),
     );
-    // Consider showing a more user-friendly error UI using the router if possible
-    runApp(ErrorApp(error: e.toString()));
   }
 }
 
-class AltsomeApp extends HookConsumerWidget {
-  const AltsomeApp({super.key});
+class AppView extends StatefulWidget {
+  const AppView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider); // Watch the router provider
+  State<AppView> createState() => _AppViewState();
+}
 
+class _AppViewState extends State<AppView> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize Router with access to AuthBloc
+    _router = createRouter(context.read<AuthBloc>());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Altsome',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      routerConfig: router,
+      routerConfig: _router,
       debugShowCheckedModeBanner: false,
     );
   }

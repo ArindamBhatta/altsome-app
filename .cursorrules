@@ -1,0 +1,25 @@
+# Project Rules: Altsome Clone
+
+## Tech Stack
+- **Framework:** Flutter
+- **State Management:** BLoC (Cubit preferred for simple state)
+- **Navigation:** GoRouter
+- **Backend:** Firebase (Local Emulator Suite)
+- **Styling:** Custom Theme (No Tailwind)
+
+## Architecture
+- **Feature-First Directory Structure**:
+  - `lib/features/<feature>/data` (Repositories)
+  - `lib/features/<feature>/logic` (BLoC/Cubit)
+  - `lib/features/<feature>/presentation` (Widgets/Screens)
+
+## Firebase Emulator Rules
+- ALWAYS assume the emulator is running on `10.0.2.2` (Android) or `localhost` (iOS).
+- Use `FirebaseAuth.instance.useAuthEmulator(...)` in `main.dart`.
+- Use `FirebaseFirestore.instance.useFirestoreEmulator(...)` in `main.dart`.
+- Use `FirebaseStorage.instance.useStorageEmulator(...)` in `main.dart`.
+
+## Coding Standards
+- Use `const` constructors wherever possible.
+- Use `Equatable` for BLoC States and Events.
+- Keep `main.dart` clean; move initialization logic to `core/init.dart` or similar.
