@@ -5,7 +5,6 @@ import 'package:altsome_app/features/auth/bloc/auth_state.dart';
 import 'package:altsome_app/features/auth/presentation/login_screen.dart';
 import 'package:altsome_app/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoutes {

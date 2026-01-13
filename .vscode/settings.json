@@ -1,16 +1,17 @@
 {
-    "cSpell.words": [
-        "altsome",
-        "appspot",
-        "ARGB",
-        "autocorrect",
-        "cupertino",
-        "firebaseapp",
-        "firestore",
-        "flutterfire",
-        "LTRB",
-        "prefs",
-        "sublist"
-    ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+  "cSpell.words": [
+    "altsome",
+    "appspot",
+    "ARGB",
+    "autocorrect",
+    "cupertino",
+    "firebaseapp",
+    "firebasestorage",
+    "firestore",
+    "flutterfire",
+    "LTRB",
+    "prefs",
+    "sublist"
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

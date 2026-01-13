@@ -1,6 +1,7 @@
 import 'package:altsome_app/config/routes.dart';
 import 'package:altsome_app/config/theme.dart';
 import 'package:altsome_app/core/services/firebase_service.dart';
+
 import 'package:altsome_app/features/auth/bloc/auth_bloc.dart';
 import 'package:altsome_app/features/auth/data/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -9,19 +10,24 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase (and Emulators if debug)
-  await ServiceInit.init();
-
-  final authRepository = AuthRepository();
-
-  runApp(App(authRepository: authRepository));
+  try {
+    await FirebaseService.init();
+    runApp(const AltsomeApp());
+  } catch (error) {
+    const MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Failed to initialize Firebase. Please try again.'),
+        ),
+      ),
+    );
+  }
 }
 
-class App extends StatelessWidget {
-  final AuthRepository authRepository;
+class AltsomeApp extends StatelessWidget {
+  final AuthRepository? authRepository;
 
-  const App({super.key, required this.authRepository});
+  const AltsomeApp({super.key, this.authRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,7 @@ class App extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => AuthBloc(authRepository: authRepository),
+            create: (_) => AuthBloc(authRepository: authRepository!),
           ),
         ],
         child: const AppView(),

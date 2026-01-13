@@ -38,3 +38,4 @@ app.*.symbols
 app.*.map.json
 
 # Ignore any additional files for temporary work or cache
+emulator-data/
